@@ -1,0 +1,25 @@
+{
+  "name": "collex-server",
+  "version": "1.0.0",
+  "description": "Backend API for Collex (bag collection tracker app)",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/selmo97/collex-server.git"
+  },
+  "keywords": [
+    "bags",
+    "tracker",
+    "collex",
+    "fashion"
+  ],
+  "author": "Selena Moss",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/selmo97/collex-server/issues"
+  },
+  "homepage": "https://github.com/selmo97/collex-server#readme"
+}
