@@ -1,9 +1,12 @@
 // --- entry point ---
-const express = require("express");
+const express = require('express');
+const pg = require('pg');
 
-// --- entry point ---
+const { Client } = pg
+const client = new Client()
 const app = express();
 const PORT = 3000;
+
 
 // --- middleware ---
 app.use(express.json());
@@ -39,7 +42,7 @@ init();
 
 /*
 📝 TODO:
-[] replace hardcoded PORT with process.env.PORT
+[] replace PORT with process.env.PORT
 [] cors() for middleware when you need to hook frontend to backend.
 
 💡 NOTES:
