@@ -1,6 +1,8 @@
 // --- entry point ---
 const express = require('express');
 const client = require('./db/client');
+const brandsRouter = require('./routes/brands');
+const bagsRouter = require('./routes/bags');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -9,13 +11,18 @@ const PORT = process.env.PORT || 3000;
 // --- middleware ---
 app.use(express.json());
 
-app.get("/", async (req, res, next) => {
+app.get("/health", async (req, res) => { //proof config and DB are correct and talking to each other
   try {
-    res.send("hello world");
+    await client.query('SELECT 1');
+    res.json({ status: "ok" })
   } catch (err) {
-    next(err);
+    console.error('Health check failed:', err); //if something breaks will be able to tell if the issue is connection or my route logic
+    res.status(500).json({ status: "error" })
   }
 });
+
+app.use('/bags', bagsRouter);
+app.use('/brands', brandsRouter);
 
 // --- 404 handler ---
 
@@ -39,7 +46,7 @@ async function init() {
     console.log('❌database connection');
     console.error(err);
   }
-  app.listen(PORT, () => console.log(`server is listening on PORT ${PORT}`));
+  app.listen(PORT, () => console.log(`server is listening on PORT ${PORT}📟`));
 };
 
 init();
