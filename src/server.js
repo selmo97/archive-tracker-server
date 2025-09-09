@@ -1,11 +1,9 @@
 // --- entry point ---
 const express = require('express');
-const pg = require('pg');
+const client = require('./db/client');
 
-const { Client } = pg
-const client = new Client()
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 
 // --- middleware ---
@@ -34,15 +32,21 @@ app.use((err, req, res, next) => {
 });
 
 // --- init server ---
-const init = () => {
-  app.listen(PORT, () => console.log("server is listening on PORT 3000 ✨📟"));
+async function init() {
+  try {
+     await client.connect();
+  } catch(err) {
+    console.log('❌database connection');
+    console.error(err);
+  }
+  app.listen(PORT, () => console.log(`server is listening on PORT ${PORT}`));
 };
 
 init();
 
 /*
 📝 TODO:
-[] replace PORT with process.env.PORT
+[x] replace PORT with process.env.PORT
 [] cors() for middleware when you need to hook frontend to backend.
 
 💡 NOTES:
