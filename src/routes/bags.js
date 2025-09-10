@@ -1,10 +1,11 @@
+//CRUDE for bags (the reads are public, but writes will be protected)
+
 const express = require("express");
 const client = require("../db/client");
 const bagsRouter = express.Router();
-module.exports = bagsRouter;
 
-//--- bags list query that returns all bags and details ---
-
+//--- gets all bags + bag info and (if available) primary photo.
+// left join -> include all bags even if no photo (so don't drop my rows!)
 const BAG_LIST_QUERY = `
   SELECT 
          b.id, b.style_name, b.color, b.style_code,
@@ -13,9 +14,9 @@ const BAG_LIST_QUERY = `
          p.id AS photo_id, p.url AS photo_url
   FROM bags b
   JOIN brands br ON b.brand_id = br.id
-  LEFT JOIN photos p ON b.id = p.bag_id AND p.is_primary = true;
+  LEFT JOIN photos p ON b.id = p.bag_id AND p.is_primary = true; 
 `
-// --- select bag by id and return details
+// --- gets single bag by id and return bag details
 const BAG_DETAILS_QUERY = `
  SELECT b.id, b.style_name, b.color, b.style_code,
  b.retail_price, b.purchase_price, b.notes,
@@ -27,7 +28,7 @@ const BAG_DETAILS_QUERY = `
  
  `
 
- //--- photos by bag query 
+ //--- gets all pics for a specific bag, order by primary(value equals true)/newest first
 
  const PHOTOS_BY_BAG_QUERY = `
  SELECT id, url, is_primary, added_at
@@ -39,11 +40,10 @@ const BAG_DETAILS_QUERY = `
 bagsRouter.get("/", async (req, res, next) => {
   try {
     const result = await client.query(
-      //running query with client
       BAG_LIST_QUERY
     );
     const bagList = result.rows; //get rows from result
-    res.json(bagList); //send back as json
+    res.json(bagList); //send back json of array of bag objects
   } catch (err) {
     next(err);
   }
@@ -54,7 +54,6 @@ bagsRouter.get("/", async (req, res, next) => {
 bagsRouter.get("/:id", async (req, res, next) => {
   try {
     const result = await client.query(
-      //running query with client
       BAG_DETAILS_QUERY,
       [req.params.id]
     );
@@ -64,3 +63,10 @@ bagsRouter.get("/:id", async (req, res, next) => {
     next(err);
   }
 });
+
+module.exports = bagsRouter;
+
+/*
+📝 TODO:
+[] organize better
+/

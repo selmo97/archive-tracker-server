@@ -5,11 +5,11 @@ const client = require('../db/client');
 
  brandsRouter.get("/", async (req,res,next) => {
     try {
-        const result = await client.query( //running query with client
+        const result = await client.query( 
             "SELECT id, name FROM brands;"
         );
         const brands = result.rows; //get rows from result
-        res.json(brands); //send back as json
+        res.json(brands); //send back json, array of brands objects
 
     } catch (err) {
         next(err);
