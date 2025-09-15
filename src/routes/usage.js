@@ -1,1 +1,1 @@
-//usage endpoints (protected??)
+//usage endpoints (protected)

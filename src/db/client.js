@@ -9,11 +9,9 @@ const client = new pg.Client(
 
 module.exports = client;
 
-/* summary:
+/* 📑 Summary:
 - loads .env
 - creates Client/Postgres connection with my DATABASE_URL (w/ local feedback)
 - exports the client so i can import it in my server and queries
 
-❓Question
-- small question on the database url... local host vs. db url 
 */

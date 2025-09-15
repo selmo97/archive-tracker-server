@@ -1,1 +1,1 @@
-// photo endpoints (protected???)
+// photo endpoints (protected)
