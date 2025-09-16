@@ -3,11 +3,7 @@
 const express = require('express');
 const client = require('../db/client');
 const requireUser = require('../middleware/auth');
-const {
-  BAG_LIST_QUERY,
-  BAG_DETAILS_QUERY,
-  PHOTOS_BY_BAG_QUERY,
-} = require('../queries/bags');
+const { BAG_LIST_QUERY, BAG_DETAILS_QUERY, PHOTOS_BY_BAG_QUERY, } = require('../queries/bags');
 const bagsRouter = express.Router();
 
 bagsRouter.get('/', requireUser, async (req, res, next) => {
@@ -21,7 +17,7 @@ bagsRouter.get('/', requireUser, async (req, res, next) => {
 });
 
 // --- /bags/:id query that returns bag by id
-bagsRouter.get('/:id', async (req, res, next) => {
+bagsRouter.get('/:id', requireUser, async (req, res, next) => {
   try {
     const result = await client.query(BAG_DETAILS_QUERY, [req.params.id]);
     const bagDetail = result.rows[0]; //get single bag detail row from result

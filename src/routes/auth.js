@@ -17,7 +17,7 @@ const { AUTH_QUERY } = require('../queries/auth');
 
 const authRouter = express.Router();
 
-//don't technically need bcrypt ... ?
+//don't technically need bcrypt, but I wanted to inlclude for when i continue to develop this project during personal time
 authRouter.post('/login', async (req, res, next) => {
   try {
     //verify required fields
@@ -50,7 +50,7 @@ authRouter.post('/login', async (req, res, next) => {
       user: {
         id: user.id,
         email: user.email,
-        username: user.username || null,
+        username: user.username || null,  
         is_admin: user.is_admin === true,
       },
     });

@@ -1,9 +1,10 @@
 const express = require('express');
 const client = require('../db/client');
+const requireUser = require('../middleware/auth');
 const brandsRouter = express.Router();
-module.exports = brandsRouter;
 
-brandsRouter.get('/', async (req, res, next) => {
+
+brandsRouter.get('/', requireUser, async (req, res, next) => {
   try {
     const result = await client.query('SELECT id, name FROM brands;');
     const brands = result.rows; //get rows from result
@@ -12,3 +13,6 @@ brandsRouter.get('/', async (req, res, next) => {
     next(err);
   }
 });
+
+module.exports = brandsRouter;
+
